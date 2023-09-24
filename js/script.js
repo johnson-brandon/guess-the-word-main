@@ -32,10 +32,5 @@ guessButton.addEventListener("click", function(e){
         e.preventDefault();
         const inputValue=lettersInput.value;
         console.log(inputValue);
-        clearInput();
+        lettersInput.value="";
 });
-
-//Clear input value for lettersInput
-const clearInput=function(){
-    lettersInput.value = "";
-};  

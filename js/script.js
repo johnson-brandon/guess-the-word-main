@@ -58,13 +58,48 @@ const validateInput = function (input) {
         return input;
     }
 };
-
-const makeGuess = function (guess) {
-    guess = guess.toUpperCase();
-    if (guessedLetters.includes(guess)) {
-        message.innerText="Ahhhhh,you've already guessed that letter dude. Try a new one.";
+// verifies guessed letter has not already been guessed
+const makeGuess = function (letter) {
+    letter = letter.toUpperCase();
+    if (guessedLetters.includes(letter)) {
+        message.innerText= "Aaaaa... you've already guessed that letter dude. Try a new one.";
     } else {
-        guessedLetters.push(guess);
+        guessedLetters.push(letter);
+        showGuessedLetters();
+        updateWordInProgress(guessedLetters);
     }
-    console.log(guessedLetters);
+    // console.log(guessedLetters);
+};
+
+// Pushes guessed letters to screen
+const showGuessedLetters = function () {
+    guessedLettersList.innerHTML="";
+    guessedLetters.forEach(function (letter) {
+        const li = document.createElement("li");
+        li.innerHTML= letter;
+        guessedLettersList.append(li);
+    })
+};
+
+// checks secret word against guessed letters and pushes correct letters
+const updateWordInProgress = function (guessedLetters) {
+    const wordUpper=word.toUpperCase();
+    const wordArray=wordUpper.split("");
+    const magicWord=[];
+
+    for (const letter of wordArray) {
+        if (guessedLetters.includes(letter)) {
+            magicWord.push(letter.toUpperCase());
+        } else {magicWord.push("●")}
+    }
+    wordInProgress.innerText = magicWord.join("");
+    checkForTheWin();
+};
+
+//verifies all correct letters haven been guessed and pushes win message and class
+const checkForTheWin = function () {
+    if( word.toUpperCase()=== wordInProgress.innerText) {
+        message.classList.add("win");
+        message.innerHTML = `<p class="highlight">Hooray! You guessed the correct word!!! Congrats!</p>`
+    }  // REDO THIS FUNCTION TO BETTER UNDERSTAND IT... MAYBE THE WHOLE LESSON...
 };

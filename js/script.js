@@ -6,8 +6,23 @@ const remaining=document.querySelector("p.remaining"); //remaining guesses
 const guessesSpan=document.querySelector("span"); // 8 guesses span
 const message=document.querySelector("p.message"); //empty p where messages will appear
 const playAgainButton=document.querySelector("button.play-again.hide");
-const word="magnolia";
+let word="magnolia";
 const guessedLetters=[];
+let remainingGuesses=8;
+
+//Update word with randomWord
+const getWord= async function () {
+    const res = await fetch(
+        "https://gist.githubusercontent.com/skillcrush-curriculum/7061f1d4d3d5bfe47efbfbcfe42bf57e/raw/5ffc447694486e7dea686f34a6c085ae371b43fe/words.txt"
+    );
+    const words= await res.text();
+    const wordsArray=words.split("\n");
+    const randomIndex=Math.floor(Math.random()*wordsArray.length);
+    const randomWord=wordsArray[randomIndex];
+    // console.log(randomWord);
+    word=randomWord.trim();
+    placeholder(word);
+};
 
 // console.log(guessedLetters, guessButton, inputLetters, wordInProgress, remaining,
 //     message, guessesSpan, playAgainButton);
@@ -20,12 +35,10 @@ const placeholder=function(word){
         // console.log(letters);
         placeholderLetters.push("●");
     }
-
     wordInProgress.innerText=placeholderLetters.join("");
-
 };
 
-placeholder(word);
+getWord();
 
 
 // Add event listener to guessButton
@@ -66,6 +79,7 @@ const makeGuess = function (letter) {
     } else {
         guessedLetters.push(letter);
         showGuessedLetters();
+        countRemainingGuesses(letter);
         updateWordInProgress(guessedLetters);
     }
     // console.log(guessedLetters);
@@ -96,10 +110,30 @@ const updateWordInProgress = function (guessedLetters) {
     checkForTheWin();
 };
 
+const countRemainingGuesses = function (guess) {
+    const wordUpper=word.toUpperCase();
+    if (!wordUpper.includes(guess)) {
+        remainingGuesses -= 1;
+        message.innerText=`Sorry, the word does not include the letter ${guess}.`;
+    } else {
+        message.innerText=`Good guess! The word has the letter ${guess}!`;
+    }
+
+    if(remainingGuesses===0) {
+        message.innerHTML=`Sorry, game over. 😢 The word was <span class="highlight">${wordUpper}</span>.`;
+        guessesSpan.innerText=`${remainingGuesses} guesses`;
+    } else if (remainingGuesses === 1) {
+        guessesSpan.innerText= `${remainingGuesses} guess`;
+    } else {
+        guessesSpan.innerText=`${remainingGuesses} guesses`;
+    }
+};
+
 //verifies all correct letters haven been guessed and pushes win message and class
 const checkForTheWin = function () {
     if( word.toUpperCase()=== wordInProgress.innerText) {
         message.classList.add("win");
         message.innerHTML = `<p class="highlight">Hooray! You guessed the correct word!!! Congrats!</p>`
-    }  // REDO THIS FUNCTION TO BETTER UNDERSTAND IT... MAYBE THE WHOLE LESSON...
+    } 
 };
+

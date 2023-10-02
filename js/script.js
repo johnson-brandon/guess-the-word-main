@@ -5,7 +5,7 @@ const wordInProgress=document.querySelector("p.word-in-progress");
 const remaining=document.querySelector("p.remaining"); //remaining guesses
 const guessesSpan=document.querySelector("span"); // 8 guesses span
 const message=document.querySelector("p.message"); //empty p where messages will appear
-const playAgainButton=document.querySelector("button.play-again.hide");
+const playAgainButton=document.querySelector("button.play-again");
 let word="magnolia";
 const guessedLetters=[];
 let remainingGuesses=8;
@@ -19,7 +19,7 @@ const getWord= async function () {
     const wordsArray=words.split("\n");
     const randomIndex=Math.floor(Math.random()*wordsArray.length);
     const randomWord=wordsArray[randomIndex];
-    // console.log(randomWord);
+    console.log(randomWord);
     word=randomWord.trim();
     placeholder(word);
 };
@@ -122,18 +122,30 @@ const countRemainingGuesses = function (guess) {
     if(remainingGuesses===0) {
         message.innerHTML=`Sorry, game over. 😢 The word was <span class="highlight">${wordUpper}</span>.`;
         guessesSpan.innerText=`${remainingGuesses} guesses`;
+        // startOver();
     } else if (remainingGuesses === 1) {
         guessesSpan.innerText= `${remainingGuesses} guess`;
     } else {
         guessesSpan.innerText=`${remainingGuesses} guesses`;
     }
+    startOver();
 };
 
 //verifies all correct letters haven been guessed and pushes win message and class
 const checkForTheWin = function () {
     if( word.toUpperCase()=== wordInProgress.innerText) {
         message.classList.add("win");
-        message.innerHTML = `<p class="highlight">Hooray! You guessed the correct word!!! Congrats!</p>`
-    } 
+        message.innerHTML = `<p class="highlight">Hooray! You guessed the correct word!!! Congrats!</p>`;
+    }
 };
 
+const startOver = function () {
+    if(remainingGuesses===0){
+        guessButton.classList.add("hide");
+        remaining.classList.add("hide");
+        guessedLettersList.classList.add("hide");
+        playAgainButton.classList.remove("hide");
+    }
+};
+
+// START OVER FUNCTION WORKS IF PLAYER LOSES, BUT NOT IF THEY WIN... FIX THIS!!!:-)

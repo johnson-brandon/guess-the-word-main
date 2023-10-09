@@ -122,13 +122,12 @@ const countRemainingGuesses = function (guess) {
     if(remainingGuesses===0) {
         message.innerHTML=`Sorry, game over. 😢 The word was <span class="highlight">${wordUpper}</span>.`;
         guessesSpan.innerText=`${remainingGuesses} guesses`;
-        // startOver();
+        startOver();
     } else if (remainingGuesses === 1) {
         guessesSpan.innerText= `${remainingGuesses} guess`;
     } else {
         guessesSpan.innerText=`${remainingGuesses} guesses`;
     }
-    startOver();
 };
 
 //verifies all correct letters haven been guessed and pushes win message and class
@@ -136,16 +135,15 @@ const checkForTheWin = function () {
     if( word.toUpperCase()=== wordInProgress.innerText) {
         message.classList.add("win");
         message.innerHTML = `<p class="highlight">Hooray! You guessed the correct word!!! Congrats!</p>`;
+        startOver();
     }
 };
 
 const startOver = function () {
-    if(remainingGuesses===0){
-        guessButton.classList.add("hide");
-        remaining.classList.add("hide");
-        guessedLettersList.classList.add("hide");
-        playAgainButton.classList.remove("hide");
-    }
+    guessButton.classList.add("hide");
+    remaining.classList.add("hide");
+    guessedLettersList.classList.add("hide");
+    playAgainButton.classList.remove("hide");
 };
 
 // START OVER FUNCTION WORKS IF PLAYER LOSES, BUT NOT IF THEY WIN... FIX THIS!!!:-)

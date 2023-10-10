@@ -7,7 +7,7 @@ const guessesSpan=document.querySelector("span"); // 8 guesses span
 const message=document.querySelector("p.message"); //empty p where messages will appear
 const playAgainButton=document.querySelector("button.play-again");
 let word="magnolia";
-const guessedLetters=[];
+let guessedLetters=[];
 let remainingGuesses=8;
 
 //Update word with randomWord
@@ -19,7 +19,7 @@ const getWord= async function () {
     const wordsArray=words.split("\n");
     const randomIndex=Math.floor(Math.random()*wordsArray.length);
     const randomWord=wordsArray[randomIndex];
-    console.log(randomWord);
+    // console.log(randomWord);
     word=randomWord.trim();
     placeholder(word);
 };
@@ -110,6 +110,7 @@ const updateWordInProgress = function (guessedLetters) {
     checkForTheWin();
 };
 
+// Update guess count with remaining guesses
 const countRemainingGuesses = function (guess) {
     const wordUpper=word.toUpperCase();
     if (!wordUpper.includes(guess)) {
@@ -139,6 +140,7 @@ const checkForTheWin = function () {
     }
 };
 
+// Reset screen to play again
 const startOver = function () {
     guessButton.classList.add("hide");
     remaining.classList.add("hide");
@@ -146,4 +148,18 @@ const startOver = function () {
     playAgainButton.classList.remove("hide");
 };
 
-// START OVER FUNCTION WORKS IF PLAYER LOSES, BUT NOT IF THEY WIN... FIX THIS!!!:-)
+// Restart game
+playAgainButton.addEventListener("click", function (){
+    message.classList.remove("win");
+    message.innerText="";
+    guessedLettersList.innerText="";
+    remainingGuesses=8;
+    guessedLetters=[];
+    guessesSpan.innerText=`${remainingGuesses} guesses`;;
+    guessButton.classList.remove("hide");
+    remaining.classList.remove("hide");
+    guessedLettersList.classList.remove("hide");
+    playAgainButton.classList.add("hide");
+
+    getWord();
+});

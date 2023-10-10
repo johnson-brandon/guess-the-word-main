@@ -148,18 +148,21 @@ const startOver = function () {
     playAgainButton.classList.remove("hide");
 };
 
-// Restart game
 playAgainButton.addEventListener("click", function (){
+    // reset game values by section
     message.classList.remove("win");
     message.innerText="";
     guessedLettersList.innerText="";
     remainingGuesses=8;
     guessedLetters=[];
     guessesSpan.innerText=`${remainingGuesses} guesses`;;
+
+    //get new word
+    getWord();
+
+    // reset user interface
     guessButton.classList.remove("hide");
     remaining.classList.remove("hide");
     guessedLettersList.classList.remove("hide");
     playAgainButton.classList.add("hide");
-
-    getWord();
 });
